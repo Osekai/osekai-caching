@@ -8,7 +8,7 @@ class Caching
      */
     public static function getCache($name)
     {
-        $caches = Database::execSelect("SELECT * FROM GlobalCache WHERE Title = ? ORDER BY Expiration", "s", [$name]);
+        $caches = Database::execSelect("SELECT * FROM GlobalCache WHERE Title = ? ORDER BY Date", "s", [$name]);
         if ($caches == null || count($caches) == 0) {
             return null;
         }
