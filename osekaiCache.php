@@ -55,5 +55,10 @@ class Caching
     {
         Database::execOperation("DELETE FROM GlobalCache WHERE Title = ?", "s", [$cacheName]);
     }
+
+    public static function wipeCacheFromPrefix($prefix)
+    {
+        Database::execOperation("DELETE FROM GlobalCache WHERE Title LIKE ?", "s", [$prefix . "%"]);
+    }
 }
 ?>
