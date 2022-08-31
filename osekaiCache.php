@@ -8,6 +8,7 @@ class Caching
      */
     public static function getCache($name)
     {
+        Caching::cleanCache(); 
         $caches = Database::execSelect("SELECT * FROM GlobalCache WHERE Title = ? ORDER BY Date", "s", [$name]);
         if ($caches == null || count($caches) == 0) {
             return null;
@@ -43,7 +44,7 @@ class Caching
     public static function cleanCache()
     {
         // removes expired caches
-        Database::execSimpleSelect("DELETE FROM GlobalCache WHERE Expiration < CURRENT_TIMESTAMP");
+        Database::execSimpleOperation("DELETE FROM GlobalCache WHERE Expiration < CURRENT_TIMESTAMP");
     }
 
     /**
@@ -56,6 +57,11 @@ class Caching
         Database::execOperation("DELETE FROM GlobalCache WHERE Title = ?", "s", [$cacheName]);
     }
 
+    /**
+     * @param mixed $prefix
+     * 
+     * @return [type]
+     */
     public static function wipeCacheFromPrefix($prefix)
     {
         Database::execOperation("DELETE FROM GlobalCache WHERE Title LIKE ?", "s", [$prefix . "%"]);
